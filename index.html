@@ -1,0 +1,2161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>PWA Player Generator - Crea tu reproductor PWA personalizado</title>
+<meta name="description" content="Generador profesional de reproductores PWA personalizables. Crea, exporta a ZIP, sube a GitHub y despliega automáticamente a Vercel tu propio reproductor de música/video progresivo.">
+<meta name="keywords" content="PWA, generador, reproductor, música, video, progressive web app, vercel, github, exportar zip">
+<meta name="author" content="PWA Player Generator">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#6366f1">
+<meta name="application-name" content="PWA Player Generator">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PWA Generator">
+<meta name="format-detection" content="telephone=no">
+<meta property="og:type" content="website">
+<meta property="og:title" content="PWA Player Generator - Crea tu reproductor PWA">
+<meta property="og:description" content="Genera reproductores PWA personalizados con exportación ZIP, GitHub y despliegue automático a Vercel">
+<meta property="og:image" content="https://pwa-player-generator.vercel.app/og-image.png">
+<meta property="og:url" content="https://pwa-player-generator.vercel.app">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PWA Player Generator">
+<meta name="twitter:description" content="Crea, exporta y despliega reproductores PWA en segundos">
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%236366f1'/%3E%3Ctext x='50' y='68' font-size='50' text-anchor='middle' fill='white'%3E♪%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%236366f1'/%3E%3Ctext x='50' y='68' font-size='50' text-anchor='middle' fill='white'%3E♪%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com">
+<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "PWA Player Generator",
+  "description": "Generador profesional de reproductores PWA personalizables",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "All",
+  "browserRequirements": "Requires JavaScript",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+<style>
+:root {
+  --bg: #0a0a1a;
+  --bg2: #12122a;
+  --bg3: #1a1a3a;
+  --card: #1e1e3f;
+  --card2: #252550;
+  --border: #2d2d5e;
+  --text: #e8e8f0;
+  --text2: #a0a0c0;
+  --primary: #6366f1;
+  --primary-hover: #5558e6;
+  --primary-light: rgba(99,102,241,0.15);
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.3);
+  --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg2); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+.container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
+
+header {
+  background: linear-gradient(135deg, var(--bg2) 0%, var(--bg3) 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--text);
+}
+.logo-icon {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, var(--primary), #8b5cf6);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+.logo-text {
+  font-size: 20px;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--text), var(--text2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.logo-badge {
+  background: var(--primary);
+  color: white;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+header nav { display: flex; gap: 8px; }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  font-family: var(--font);
+}
+.btn:active { transform: scale(0.97); }
+.btn-primary { background: var(--primary); color: white; }
+.btn-primary:hover { background: var(--primary-hover); box-shadow: 0 4px 20px rgba(99,102,241,0.4); }
+.btn-secondary { background: var(--card2); color: var(--text); border: 1px solid var(--border); }
+.btn-secondary:hover { background: var(--border); }
+.btn-success { background: var(--success); color: white; }
+.btn-success:hover { background: #16a34a; }
+.btn-danger { background: var(--danger); color: white; }
+.btn-danger:hover { background: #dc2626; }
+.btn-warning { background: var(--warning); color: black; }
+.btn-warning:hover { background: #d97706; }
+.btn-sm { padding: 6px 14px; font-size: 12px; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+.hero {
+  text-align: center;
+  padding: 60px 20px 40px;
+  background: linear-gradient(180deg, var(--bg2) 0%, transparent 100%);
+}
+.hero h1 {
+  font-size: clamp(28px, 5vw, 52px);
+  font-weight: 800;
+  margin-bottom: 12px;
+  line-height: 1.2;
+}
+.hero h1 span { background: linear-gradient(135deg, var(--primary), #a78bfa, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.hero p { font-size: clamp(16px, 2vw, 20px); color: var(--text2); max-width: 640px; margin: 0 auto 24px; }
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  margin-top: 24px;
+}
+.hero-stat { text-align: center; }
+.hero-stat-num { font-size: 28px; font-weight: 800; color: var(--primary); }
+.hero-stat-label { font-size: 13px; color: var(--text2); }
+
+.mb-4 { margin-bottom: 16px; }
+.mb-6 { margin-bottom: 24px; }
+.mt-4 { margin-top: 16px; }
+.mt-6 { margin-top: 24px; }
+.gap-2 { gap: 8px; }
+.gap-4 { gap: 16px; }
+.flex { display: flex; }
+.flex-wrap { flex-wrap: wrap; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.grid { display: grid; }
+.grid-2 { grid-template-columns: 1fr 1fr; }
+.grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+@media(max-width:900px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+
+.layout {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 24px;
+  padding-bottom: 60px;
+}
+@media(max-width:1100px) { .layout { grid-template-columns: 1fr; } }
+
+.panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+}
+.panel-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text);
+}
+.panel-title svg { color: var(--primary); }
+.panel-subtitle { font-size: 13px; color: var(--text2); margin-bottom: 16px; }
+
+.form-group { margin-bottom: 16px; }
+.form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--text2);
+}
+.form-group .hint { font-size: 11px; color: var(--text2); margin-top: 4px; opacity: 0.7; }
+input:not([type=color]):not([type=file]), select, textarea {
+  width: 100%;
+  padding: 10px 14px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 14px;
+  font-family: var(--font);
+  transition: border-color 0.2s;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-light);
+}
+textarea { resize: vertical; min-height: 80px; }
+input[type=color] { width: 48px; height: 48px; padding: 2px; border-radius: var(--radius-sm); cursor: pointer; }
+input[type=file] { padding: 8px; }
+select { cursor: pointer; }
+select option { background: var(--bg2); color: var(--text); }
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+@media(max-width:600px) { .form-row { grid-template-columns: 1fr; } }
+
+.checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 13px;
+  user-select: none;
+}
+.checkbox-item:hover { border-color: var(--primary); }
+.checkbox-item.active { border-color: var(--primary); background: var(--primary-light); }
+.checkbox-item input { display: none; }
+.checkbox-item .check { width: 16px; height: 16px; border: 2px solid var(--text2); border-radius: 3px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s; }
+.checkbox-item.active .check { background: var(--primary); border-color: var(--primary); }
+.checkbox-item.active .check::after { content: '✓'; color: white; font-size: 11px; font-weight: 700; }
+
+.preview-section {
+  position: sticky;
+  top: 80px;
+}
+.preview-frame {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  min-height: 400px;
+  max-height: 600px;
+  position: relative;
+}
+.preview-frame iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  min-height: 400px;
+  max-height: 600px;
+}
+.preview-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  color: var(--text2);
+  text-align: center;
+  padding: 40px;
+}
+.preview-empty svg { width: 64px; height: 64px; opacity: 0.3; margin-bottom: 16px; }
+
+.actions-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  padding: 14px 24px;
+  border-radius: var(--radius-sm);
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  z-index: 1000;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s;
+  box-shadow: var(--shadow);
+  max-width: 380px;
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+.toast-success { background: var(--success); }
+.toast-error { background: var(--danger); }
+.toast-info { background: var(--primary); }
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(4px);
+}
+.modal-overlay.show { display: flex; }
+.modal {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  max-width: 520px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.modal h2 { font-size: 20px; margin-bottom: 8px; }
+.modal p { color: var(--text2); margin-bottom: 20px; font-size: 14px; }
+.modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 20px; }
+
+.code-block {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  font-family: 'Cascadia Code', 'Fira Code', monospace;
+  font-size: 12px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+  color: var(--text2);
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.tabs { display: flex; gap: 4px; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 0; }
+.tab {
+  padding: 10px 18px;
+  background: transparent;
+  border: none;
+  color: var(--text2);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: all 0.2s;
+  font-family: var(--font);
+}
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+.section-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 24px 0;
+}
+
+.track-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin-bottom: 8px;
+}
+.track-item .track-info { flex: 1; }
+.track-item .track-title { font-weight: 600; font-size: 13px; }
+.track-item .track-artist { font-size: 12px; color: var(--text2); }
+.track-item .track-actions { display: flex; gap: 4px; }
+
+footer {
+  text-align: center;
+  padding: 40px 20px;
+  border-top: 1px solid var(--border);
+  color: var(--text2);
+  font-size: 13px;
+}
+footer a { color: var(--primary); text-decoration: none; }
+footer a:hover { text-decoration: underline; }
+
+.loading {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.preview-mockup {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font);
+}
+.mockup-header {
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.mockup-header h3 { font-size: 16px; font-weight: 700; }
+.mockup-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+}
+.mockup-body .mockup-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  margin-bottom: 16px;
+}
+.mockup-body h2 { font-size: 22px; margin-bottom: 4px; }
+.mockup-body p { font-size: 14px; opacity: 0.7; margin-bottom: 24px; }
+.mockup-controls {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.mockup-controls button {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
+  transition: all 0.2s;
+}
+.mockup-controls .mockup-play { width: 60px; height: 60px; font-size: 24px; }
+.mockup-progress {
+  width: 80%;
+  height: 4px;
+  border-radius: 2px;
+  opacity: 0.3;
+}
+.mockup-tracks {
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.mockup-track {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+.mockup-track.active { opacity: 0.8; }
+.mockup-track-num { width: 24px; text-align: center; font-size: 12px; opacity: 0.5; }
+.mockup-track-info { flex: 1; }
+.mockup-track-info .t { font-size: 13px; font-weight: 600; }
+.mockup-track-info .a { font-size: 11px; opacity: 0.6; }
+.mockup-track-dur { font-size: 11px; opacity: 0.5; }
+
+.generated-code-preview {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  margin-top: 16px;
+}
+.generated-code-preview .file-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.generated-code-preview .file-tab {
+  padding: 4px 12px;
+  background: var(--card2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 11px;
+  cursor: pointer;
+  color: var(--text2);
+  font-family: var(--font);
+  transition: all 0.2s;
+}
+.generated-code-preview .file-tab:hover { border-color: var(--primary); }
+.generated-code-preview .file-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+.generated-code-preview .code-content {
+  font-family: 'Cascadia Code', 'Fira Code', monospace;
+  font-size: 11px;
+  line-height: 1.5;
+  max-height: 400px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <a href="#" class="logo">
+      <div class="logo-icon">♪</div>
+      <span class="logo-text">PWA Generator</span>
+      <span class="logo-badge">v2</span>
+    </a>
+    <nav>
+      <button class="btn btn-secondary btn-sm" onclick="document.getElementById('config-section').scrollIntoView({behavior:'smooth'})">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.32 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        Configurar
+      </button>
+      <button class="btn btn-primary btn-sm" onclick="document.getElementById('export-section').scrollIntoView({behavior:'smooth'})">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Exportar
+      </button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <h1>Crea tu <span>Reproductor PWA</span></h1>
+    <p>Genera reproductores de música/video progresivos personalizables. Exporta a ZIP, súbelo a GitHub o despliégalo automáticamente en Vercel.</p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num">100%</div>
+        <div class="hero-stat-label">Personalizable</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">PWA</div>
+        <div class="hero-stat-label">Offline Ready</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">1-Click</div>
+        <div class="hero-stat-label">Deploy Vercel</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="layout">
+      <!-- LEFT: Configuration -->
+      <div id="config-section">
+        <div class="panel">
+          <div class="tabs" id="configTabs">
+            <button class="tab active" data-tab="tab-basico">Básico</button>
+            <button class="tab" data-tab="tab-apariencia">Apariencia</button>
+            <button class="tab" data-tab="tab-player">Player</button>
+            <button class="tab" data-tab="tab-pistas">Pistas</button>
+            <button class="tab" data-tab="tab-seo">SEO</button>
+          </div>
+
+          <!-- TAB BASICO -->
+          <div class="tab-content active" id="tab-basico">
+            <div class="panel-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+              Información básica
+            </div>
+            <div class="form-group">
+              <label>Nombre del PWA</label>
+              <input type="text" id="pwaName" value="Mi Reproductor" oninput="generatePWA()" placeholder="Ej: Mi Música PWA">
+              <div class="hint">Nombre visible de tu aplicación PWA</div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Short Name</label>
+                <input type="text" id="pwaShortName" value="Reproductor" oninput="generatePWA()" placeholder="Nombre corto">
+                <div class="hint">Máx. 12 caracteres (ícono en home)</div>
+              </div>
+              <div class="form-group">
+                <label>Idioma</label>
+                <select id="pwaLang" onchange="generatePWA()">
+                  <option value="es">Español</option>
+                  <option value="en">English</option>
+                  <option value="pt">Português</option>
+                  <option value="fr">Français</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Descripción</label>
+              <textarea id="pwaDescription" oninput="generatePWA()" placeholder="Describe tu reproductor...">Mi reproductor de música PWA personalizado</textarea>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>URL Base</label>
+                <input type="text" id="pwaUrl" value="https://mi-reproductor.vercel.app" oninput="generatePWA()" placeholder="https://...">
+                <div class="hint">URL donde se desplegará el PWA</div>
+              </div>
+              <div class="form-group">
+                <label>Start URL</label>
+                <input type="text" id="pwaStartUrl" value="/" oninput="generatePWA()" placeholder="/">
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB APARIENCIA -->
+          <div class="tab-content" id="tab-apariencia">
+            <div class="panel-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+              Personalización visual
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Color primario</label>
+                <input type="color" id="pwaPrimaryColor" value="#6366f1" oninput="generatePWA()">
+              </div>
+              <div class="form-group">
+                <label>Color de fondo</label>
+                <input type="color" id="pwaBgColor" value="#0a0a1a" oninput="generatePWA()">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Color de superficie</label>
+                <input type="color" id="pwaSurfaceColor" value="#1e1e3f" oninput="generatePWA()">
+              </div>
+              <div class="form-group">
+                <label>Color texto</label>
+                <input type="color" id="pwaTextColor" value="#e8e8f0" oninput="generatePWA()">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Theme Color (manifest)</label>
+                <input type="color" id="pwaThemeColor" value="#0a0a1a" oninput="generatePWA()">
+              </div>
+              <div class="form-group">
+                <label>Background Color</label>
+                <input type="color" id="pwaBackgroundColor" value="#0a0a1a" oninput="generatePWA()">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Diseño del player</label>
+              <select id="pwaLayout" onchange="generatePWA()">
+                <option value="modern">Moderno</option>
+                <option value="classic">Clásico</option>
+                <option value="minimal">Minimalista</option>
+                <option value="glass">Glassmorphism</option>
+                <option value="retro">Retro</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Ícono PWA (URL)</label>
+                <input type="text" id="pwaIconUrl" oninput="generatePWA()" placeholder="https://ejemplo.com/icon.png">
+                <div class="hint">Imagen cuadrada recomendada: 512x512px</div>
+              </div>
+              <div class="form-group">
+                <label>O sube uno</label>
+                <input type="file" id="pwaIconFile" accept="image/png,image/jpeg,image/svg+xml,image/webp" onchange="handleIconUpload(event)">
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB PLAYER -->
+          <div class="tab-content" id="tab-player">
+            <div class="panel-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Configuración del reproductor
+            </div>
+            <div class="form-group">
+              <label>Tipo de reproductor</label>
+              <select id="pwaPlayerType" onchange="generatePWA()">
+                <option value="audio">Audio (música)</option>
+                <option value="video">Video</option>
+                <option value="both">Audio + Video</option>
+                <option value="radio">Radio en vivo</option>
+                <option value="podcast">Podcast</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Características del player</label>
+              <div class="checkbox-group" id="playerFeatures">
+                <label class="checkbox-item active" data-feature="playlist">
+                  <input type="checkbox" checked> <span class="check"></span> Playlist
+                </label>
+                <label class="checkbox-item active" data-feature="shuffle">
+                  <input type="checkbox" checked> <span class="check"></span> Shuffle
+                </label>
+                <label class="checkbox-item active" data-feature="repeat">
+                  <input type="checkbox" checked> <span class="check"></span> Repeat
+                </label>
+                <label class="checkbox-item active" data-feature="equalizer">
+                  <input type="checkbox" checked> <span class="check"></span> Ecualizador
+                </label>
+                <label class="checkbox-item" data-feature="lyrics">
+                  <input type="checkbox"> <span class="check"></span> Letras
+                </label>
+                <label class="checkbox-item active" data-feature="volume">
+                  <input type="checkbox" checked> <span class="check"></span> Volumen
+                </label>
+                <label class="checkbox-item" data-feature="visualizer">
+                  <input type="checkbox"> <span class="check"></span> Visualizador
+                </label>
+                <label class="checkbox-item" data-feature="download">
+                  <input type="checkbox"> <span class="check"></span> Descargar
+                </label>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Auto-play</label>
+                <select id="pwaAutoplay" onchange="generatePWA()">
+                  <option value="false">No</option>
+                  <option value="true">Sí</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Crossfade (segundos)</label>
+                <input type="number" id="pwaCrossfade" value="3" min="0" max="10" oninput="generatePWA()">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Nombre de marca del player</label>
+              <input type="text" id="pwaBrand" value="MiPlayer" oninput="generatePWA()" placeholder="Nombre de tu marca">
+            </div>
+          </div>
+
+          <!-- TAB PISTAS -->
+          <div class="tab-content" id="tab-pistas">
+            <div class="panel-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+              Pistas / Contenido
+            </div>
+            <div class="panel-subtitle">Agrega las pistas que aparecerán en tu reproductor</div>
+            <div id="tracksContainer"></div>
+            <button class="btn btn-secondary btn-sm" onclick="addTrack()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Agregar pista
+            </button>
+            <div class="section-divider"></div>
+            <div class="form-group">
+              <label>O importar desde URL (JSON)</label>
+              <textarea id="tracksJson" rows="4" placeholder='[{"title":"Mi Canción","artist":"Artista","url":"https://...","cover":"https://...","duration":"3:45"}]' oninput="importTracksFromJson()"></textarea>
+              <div class="hint">Pega un array JSON con tus pistas</div>
+            </div>
+          </div>
+
+          <!-- TAB SEO -->
+          <div class="tab-content" id="tab-seo">
+            <div class="panel-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              SEO y Metadatos
+            </div>
+            <div class="form-group">
+              <label>Título SEO</label>
+              <input type="text" id="seoTitle" value="Mi Reproductor PWA - Música sin límites" oninput="generatePWA()">
+            </div>
+            <div class="form-group">
+              <label>Meta Description</label>
+              <textarea id="seoDescription" oninput="generatePWA()" rows="2">Reproductor de música PWA con las mejores canciones. Escucha online, offline y en cualquier dispositivo.</textarea>
+            </div>
+            <div class="form-group">
+              <label>Palabras clave (separadas por coma)</label>
+              <input type="text" id="seoKeywords" value="música, reproductor, pwa, online, radio, streaming" oninput="generatePWA()">
+            </div>
+            <div class="form-group">
+              <label>Autor</label>
+              <input type="text" id="seoAuthor" value="PWA Generator" oninput="generatePWA()">
+            </div>
+            <div class="form-group">
+              <label>Twitter handle</label>
+              <input type="text" id="seoTwitter" value="@pwagenerator" oninput="generatePWA()">
+            </div>
+            <div class="form-group">
+              <label>Google Analytics ID (opcional)</label>
+              <input type="text" id="seoGaId" placeholder="G-XXXXXXXXXX" oninput="generatePWA()">
+            </div>
+          </div>
+        </div>
+
+        <!-- EXPORT SECTION -->
+        <div class="panel mt-4" id="export-section">
+          <div class="panel-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Exportar & Desplegar
+          </div>
+          <p style="color:var(--text2);font-size:13px;margin-bottom:16px;">
+            Tu PWA se genera automáticamente. Exporta los archivos, súbelos a GitHub o despliégalos directamente en Vercel.
+          </p>
+          <div class="actions-bar">
+            <button class="btn btn-primary" onclick="exportZIP()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Exportar ZIP
+            </button>
+            <button class="btn btn-secondary" onclick="showGithubModal()">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+              Subir a GitHub
+            </button>
+            <button class="btn btn-success" onclick="showVercelModal()">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M24 22.525H0l12-21.05 12 21.05z"/></svg>
+              Deploy en Vercel
+            </button>
+          </div>
+          <div style="margin-top:16px;padding:12px;background:var(--bg2);border-radius:var(--radius-sm);font-size:12px;color:var(--text2);">
+            <strong>📦 Tu PWA incluye:</strong> index.html, manifest.json, sw.js, style.css, app.js, 404.html, robots.txt, sitemap.xml, vercel.json
+          </div>
+        </div>
+
+        <!-- CODE PREVIEW -->
+        <div class="panel mt-4">
+          <div class="panel-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            Vista previa del código
+          </div>
+          <div class="generated-code-preview" id="codePreview">
+            <div class="file-tabs" id="fileTabs"></div>
+            <pre class="code-content" id="codeContent">// Los archivos se generan automáticamente</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Preview -->
+      <div class="preview-section">
+        <div class="panel">
+          <div class="panel-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            Vista previa en vivo
+          </div>
+          <div class="preview-frame" id="previewFrame">
+            <div class="preview-empty" id="previewEmpty">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              <div>Tu reproductor se previsualizará aquí</div>
+              <div style="font-size:12px;margin-top:4px;">Configura las opciones a la izquierda</div>
+            </div>
+            <div id="previewContainer" style="display:none;width:100%;height:100%;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <p>PWA Player Generator v2.0 — Creado con ♥ para la comunidad PWA</p>
+    <p style="margin-top:8px;">
+      <a href="https://vercel.com" target="_blank" rel="noopener">Deploy con ▲ Vercel</a> •
+      <a href="https://github.com" target="_blank" rel="noopener">GitHub</a> •
+      Documentación PWA
+    </p>
+  </div>
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- GITHUB MODAL -->
+<div class="modal-overlay" id="githubModal">
+  <div class="modal">
+    <h2>🚀 Subir a GitHub</h2>
+    <p>Ingresa tu token de GitHub y el nombre del repositorio para subir tu PWA generado.</p>
+    <div class="form-group">
+      <label>GitHub Token (Personal Access Token)</label>
+      <input type="password" id="githubToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+      <div class="hint"><a href="https://github.com/settings/tokens" target="_blank" rel="noopener" style="color:var(--primary)">Crear token →</a> (requiere repo, workflow scopes)</div>
+    </div>
+    <div class="form-group">
+      <label>Nombre del repositorio</label>
+      <input type="text" id="githubRepo" placeholder="mi-reproductor-pwa" value="">
+    </div>
+    <div class="form-group">
+      <label>Mensaje del commit</label>
+      <input type="text" id="githubCommitMsg" value="Initial commit - PWA Player generado">
+    </div>
+    <div class="form-group">
+      <label>
+        <input type="checkbox" id="githubDeployVercel" onchange="document.getElementById('vercelTokenDeploy').style.display=this.checked?'block':'none'">
+        También desplegar en Vercel automáticamente
+      </label>
+    </div>
+    <div class="form-group" id="vercelTokenDeploy" style="display:none">
+      <label>Vercel Token</label>
+      <input type="password" id="githubVercelToken" placeholder="Ingresa tu Vercel Token">
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal('githubModal')">Cancelar</button>
+      <button class="btn btn-primary" id="githubBtn" onclick="deployToGithub()">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+        Subir a GitHub
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- VERCEL MODAL -->
+<div class="modal-overlay" id="vercelModal">
+  <div class="modal">
+    <h2>▲ Deploy en Vercel</h2>
+    <p>Despliega tu PWA directamente en Vercel con un solo clic.</p>
+    <div class="form-group">
+      <label>Vercel Token</label>
+      <input type="password" id="vercelToken" placeholder="Ingresa tu Vercel Token">
+      <div class="hint"><a href="https://vercel.com/account/tokens" target="_blank" rel="noopener" style="color:var(--primary)">Crear token en Vercel →</a></div>
+    </div>
+    <div class="form-group">
+      <label>Nombre del proyecto en Vercel</label>
+      <input type="text" id="vercelProjectName" value="mi-reproductor-pwa">
+    </div>
+    <div class="form-group">
+      <label>
+        <input type="checkbox" id="vercelCreateGitHub" checked>
+        Crear repo en GitHub primero y conectar
+      </label>
+    </div>
+    <div class="form-group" id="vercelGithubFields">
+      <label>GitHub Token</label>
+      <input type="password" id="vercelGithubToken" placeholder="Token para crear repo en GitHub">
+    </div>
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;margin-bottom:16px;font-size:12px;color:var(--text2);">
+      <strong>¿Qué pasará?</strong> Crearemos tu proyecto en Vercel, subiremos los archivos y lo desplegaremos en producción. Recibirás una URL como <code>https://tu-proyecto.vercel.app</code>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal('vercelModal')">Cancelar</button>
+      <button class="btn btn-success" id="vercelBtn" onclick="deployToVercel()">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M24 22.525H0l12-21.05 12 21.05z"/></svg>
+        Desplegar en Vercel
+      </button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+<script>
+// ============================================================
+// STATE
+// ============================================================
+const state = {
+  tracks: [
+    { id: 1, title: 'Canción de ejemplo 1', artist: 'Artista Uno', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', cover: '', duration: '5:06' },
+    { id: 2, title: 'Canción de ejemplo 2', artist: 'Artista Dos', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3', cover: '', duration: '4:30' },
+    { id: 3, title: 'Canción de ejemplo 3', artist: 'Artista Tres', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3', cover: '', duration: '5:22' },
+  ],
+  trackIdCounter: 4,
+  generatedFiles: {},
+  activePreviewFile: 'index.html',
+  iconBase64: null,
+  currentPwaConfig: {}
+};
+
+// ============================================================
+// TABS
+// ============================================================
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.tab).classList.add('active');
+  });
+});
+
+// Checkbox groups
+document.querySelectorAll('.checkbox-item').forEach(item => {
+  item.addEventListener('click', (e) => {
+    if (e.target.tagName !== 'INPUT') {
+      const cb = item.querySelector('input');
+      cb.checked = !cb.checked;
+      item.classList.toggle('active', cb.checked);
+      generatePWA();
+    }
+  });
+  const cb = item.querySelector('input');
+  cb.addEventListener('change', () => {
+    item.classList.toggle('active', cb.checked);
+    generatePWA();
+  });
+});
+
+// ============================================================
+// TRACKS
+// ============================================================
+function renderTracks() {
+  const container = document.getElementById('tracksContainer');
+  container.innerHTML = state.tracks.map(t => `
+    <div class="track-item">
+      <div class="track-info">
+        <div class="track-title">${escHtml(t.title)}</div>
+        <div class="track-artist">${escHtml(t.artist)} · ${escHtml(t.duration)}</div>
+      </div>
+      <div class="track-actions">
+        <button class="btn btn-secondary btn-sm" onclick="editTrack(${t.id})" title="Editar">✏️</button>
+        <button class="btn btn-danger btn-sm" onclick="removeTrack(${t.id})" title="Eliminar">🗑️</button>
+        <button class="btn btn-secondary btn-sm" onclick="moveTrack(${t.id}, -1)" title="Subir">↑</button>
+        <button class="btn btn-secondary btn-sm" onclick="moveTrack(${t.id}, 1)" title="Bajar">↓</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function addTrack(data) {
+  const id = state.trackIdCounter++;
+  const t = data || { id, title: 'Nueva pista', artist: 'Artista', url: '', cover: '', duration: '0:00' };
+  state.tracks.push(t);
+  renderTracks();
+  generatePWA();
+}
+
+function removeTrack(id) {
+  if (state.tracks.length <= 1) { showToast('Debes tener al menos una pista', 'error'); return; }
+  state.tracks = state.tracks.filter(t => t.id !== id);
+  renderTracks();
+  generatePWA();
+}
+
+function moveTrack(id, dir) {
+  const idx = state.tracks.findIndex(t => t.id === id);
+  if (idx === -1) return;
+  const newIdx = idx + dir;
+  if (newIdx < 0 || newIdx >= state.tracks.length) return;
+  [state.tracks[idx], state.tracks[newIdx]] = [state.tracks[newIdx], state.tracks[idx]];
+  renderTracks();
+  generatePWA();
+}
+
+function editTrack(id) {
+  const track = state.tracks.find(t => t.id === id);
+  if (!track) return;
+  const title = prompt('Título:', track.title);
+  if (title && title.trim()) track.title = title.trim();
+  const artist = prompt('Artista:', track.artist);
+  if (artist) track.artist = artist.trim();
+  const url = prompt('URL del audio/video:', track.url);
+  if (url) track.url = url.trim();
+  const cover = prompt('URL de portada (opcional):', track.cover);
+  if (cover !== null) track.cover = cover.trim();
+  const dur = prompt('Duración:', track.duration);
+  if (dur) track.duration = dur.trim();
+  renderTracks();
+  generatePWA();
+}
+
+function importTracksFromJson() {
+  const val = document.getElementById('tracksJson').value.trim();
+  if (!val) return;
+  try {
+    const items = JSON.parse(val);
+    if (!Array.isArray(items)) throw new Error('No es un array');
+    items.forEach(item => {
+      if (item.title) addTrack({ id: state.trackIdCounter++, title: item.title, artist: item.artist || 'Desconocido', url: item.url || '', cover: item.cover || '', duration: item.duration || '0:00' });
+    });
+    document.getElementById('tracksJson').value = '';
+    showToast(`${items.length} pistas importadas`, 'success');
+  } catch(e) {
+    showToast('Error al importar JSON: ' + e.message, 'error');
+  }
+}
+
+// ============================================================
+// ICON UPLOAD
+// ============================================================
+function handleIconUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    state.iconBase64 = e.target.result;
+    document.getElementById('pwaIconUrl').value = '(ícono cargado)';
+    generatePWA();
+    showToast('Ícono cargado exitosamente', 'success');
+  };
+  reader.readAsDataURL(file);
+}
+
+// ============================================================
+// GENERATE PWA FILES
+// ============================================================
+function generatePWA() {
+  const config = getConfig();
+  state.currentPwaConfig = config;
+  try {
+    state.generatedFiles = {
+      'index.html': generateIndexHtml(config),
+      'manifest.json': generateManifest(config),
+      'sw.js': generateSw(config),
+      'style.css': generateStyle(config),
+      'app.js': generateAppJs(config),
+      '404.html': generate404Html(config),
+      'robots.txt': generateRobots(config),
+      'sitemap.xml': generateSitemap(config),
+      'vercel.json': generateVercelJson(config),
+      '_config.yml': generateConfigYml(config)
+    };
+    updatePreview(config);
+    updateCodePreview();
+  } catch(e) {
+    console.error('Generate error:', e);
+  }
+}
+
+function getConfig() {
+  const features = [];
+  document.querySelectorAll('.checkbox-item.active').forEach(el => {
+    features.push(el.dataset.feature);
+  });
+  return {
+    name: document.getElementById('pwaName').value || 'Mi Reproductor',
+    shortName: document.getElementById('pwaShortName').value || 'Reproductor',
+    description: document.getElementById('pwaDescription').value || '',
+    lang: document.getElementById('pwaLang').value,
+    url: document.getElementById('pwaUrl').value || 'https://mi-reproductor.vercel.app',
+    startUrl: document.getElementById('pwaStartUrl').value || '/',
+    primaryColor: document.getElementById('pwaPrimaryColor').value,
+    bgColor: document.getElementById('pwaBgColor').value,
+    surfaceColor: document.getElementById('pwaSurfaceColor').value,
+    textColor: document.getElementById('pwaTextColor').value,
+    themeColor: document.getElementById('pwaThemeColor').value,
+    backgroundColor: document.getElementById('pwaBackgroundColor').value,
+    layout: document.getElementById('pwaLayout').value,
+    iconUrl: document.getElementById('pwaIconUrl').value,
+    playerType: document.getElementById('pwaPlayerType').value,
+    features,
+    autoplay: document.getElementById('pwaAutoplay').value === 'true',
+    crossfade: parseInt(document.getElementById('pwaCrossfade').value) || 0,
+    brand: document.getElementById('pwaBrand').value || 'MiPlayer',
+    tracks: state.tracks,
+    seoTitle: document.getElementById('seoTitle').value || config?.name || 'PWA Player',
+    seoDescription: document.getElementById('seoDescription').value || '',
+    seoKeywords: document.getElementById('seoKeywords').value || '',
+    seoAuthor: document.getElementById('seoAuthor').value || '',
+    seoTwitter: document.getElementById('seoTwitter').value || '',
+    seoGaId: document.getElementById('seoGaId').value || ''
+  };
+}
+
+// ============================================================
+// GENERATORS
+// ============================================================
+function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function generateIndexHtml(c) {
+  const t = c.tracks;
+  const feats = c.features.join(',');
+  const hasEq = c.features.includes('equalizer');
+  const hasLyrics = c.features.includes('lyrics');
+  const hasVis = c.features.includes('visualizer');
+  const hasDl = c.features.includes('download');
+  return `<!DOCTYPE html>
+<html lang="${c.lang}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>${escHtml(c.seoTitle)}</title>
+<meta name="description" content="${escHtml(c.seoDescription)}">
+<meta name="keywords" content="${escHtml(c.seoKeywords)}">
+<meta name="author" content="${escHtml(c.seoAuthor)}">
+<meta name="theme-color" content="${c.themeColor}">
+<meta name="application-name" content="${escHtml(c.name)}">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="${escHtml(c.shortName)}">
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" type="image/png" href="/icon-192.png">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<meta property="og:title" content="${escHtml(c.seoTitle)}">
+<meta property="og:description" content="${escHtml(c.seoDescription)}">
+<meta property="og:type" content="website">
+<meta property="og:url" content="${c.url}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${escHtml(c.seoTitle)}">
+<meta name="twitter:description" content="${escHtml(c.seoDescription)}">
+<meta name="twitter:site" content="${escHtml(c.seoTwitter)}">
+<link rel="stylesheet" href="/style.css">
+${c.seoGaId ? `<script async src="https://www.googletagmanager.com/gtag/js?id=${escHtml(c.seoGaId)}"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${escHtml(c.seoGaId)}');<\/script>` : ''}
+</head>
+<body>
+<div id="app"></div>
+<script>
+const CONFIG = ${JSON.stringify({
+    name: c.name, shortName: c.shortName, description: c.description,
+    lang: c.lang, url: c.url, primaryColor: c.primaryColor, bgColor: c.bgColor,
+    surfaceColor: c.surfaceColor, textColor: c.textColor, layout: c.layout,
+    playerType: c.playerType, features: c.features, autoplay: c.autoplay,
+    crossfade: c.crossfade, brand: c.brand, tracks: c.tracks.map(t => ({
+      title: t.title, artist: t.artist, url: t.url, cover: t.cover, duration: t.duration
+    }))
+  }, null, 2)};
+<\/script>
+<script src="/app.js"><\/script>
+</body>
+</html>`;
+}
+
+function generateManifest(c) {
+  return JSON.stringify({
+    name: c.name,
+    short_name: c.shortName,
+    description: c.description,
+    start_url: c.startUrl,
+    display: 'standalone',
+    orientation: 'portrait',
+    background_color: c.backgroundColor,
+    theme_color: c.themeColor,
+    lang: c.lang,
+    scope: '/',
+    categories: ['music', 'entertainment', 'utilities'],
+    icons: [
+      { src: '/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any maskable' },
+      { src: '/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' },
+      { src: '/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
+    ],
+    screenshots: [],
+    prefer_related_applications: false,
+    related_applications: [],
+    shortcuts: [
+      { name: 'Reproducir', short_name: 'Play', description: 'Iniciar reproducción', url: '/?action=play', icons: [{ src: '/icon-192.png', sizes: '192x192' }] }
+    ]
+  }, null, 2);
+}
+
+function generateSw(c) {
+  const cacheName = `${c.brand || 'pwa'}-v1`;
+  return `const CACHE_NAME = '${cacheName}';
+const ASSETS = [
+  '/', '/index.html', '/style.css', '/app.js', '/manifest.json',
+  '/icon-192.png', '/icon-512.png', '/offline.html'
+];
+
+self.addEventListener('install', event => {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(cache => {
+      return cache.addAll(ASSETS).catch(() => {});
+    })
+  );
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(keys => {
+      return Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)));
+    })
+  );
+  self.clients.claim();
+});
+
+self.addEventListener('fetch', event => {
+  if (event.request.method !== 'GET') return;
+  event.respondWith(
+    caches.match(event.request).then(cached => {
+      const fetchPromise = fetch(event.request).then(response => {
+        if (response && response.status === 200 && response.type === 'basic') {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+        }
+        return response;
+      }).catch(() => cached);
+      return cached || fetchPromise;
+    })
+  );
+});
+
+self.addEventListener('message', event => {
+  if (event.data === 'skip-waiting') self.skipWaiting();
+});`;
+}
+
+function generateStyle(c) {
+  return `:root {
+  --primary: ${c.primaryColor};
+  --bg: ${c.bgColor};
+  --surface: ${c.surfaceColor};
+  --text: ${c.textColor};
+  --text2: ${adjustColor(c.textColor, -40)};
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.3);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  height: 100%;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+#app {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+header {
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+header h1 { font-size: 16px; font-weight: 700; }
+header .brand { font-size: 12px; opacity: 0.5; }
+.player-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow-y: auto;
+}
+.cover-art {
+  width: min(280px, 60vw);
+  height: min(280px, 60vw);
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--primary), transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 64px;
+  margin-bottom: 24px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  position: relative;
+  overflow: hidden;
+}
+.cover-art img { width: 100%; height: 100%; object-fit: cover; border-radius: 16px; }
+.cover-art .placeholder { font-size: 48px; opacity: 0.5; }
+.track-info { text-align: center; margin-bottom: 24px; }
+.track-info h2 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+.track-info p { font-size: 14px; opacity: 0.6; }
+.progress-container { width: 100%; max-width: 400px; margin-bottom: 16px; }
+.progress-bar {
+  width: 100%; height: 4px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 2px;
+  cursor: pointer;
+  position: relative;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--primary);
+  border-radius: 2px;
+  width: 0%;
+  transition: width 0.1s linear;
+}
+.time-display { display: flex; justify-content: space-between; font-size: 11px; opacity: 0.5; margin-top: 4px; }
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 16px;
+}
+.controls button {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.05);
+  color: var(--text);
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+.controls button:active { transform: scale(0.9); }
+.controls .play-btn {
+  width: 60px; height: 60px;
+  background: var(--primary);
+  font-size: 24px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+.controls .play-btn:hover { transform: scale(1.05); }
+.volume-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  max-width: 200px;
+  margin-bottom: 16px;
+}
+.volume-container input[type=range] {
+  flex: 1;
+  -webkit-appearance: none;
+  height: 4px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 2px;
+  outline: none;
+}
+.volume-container input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--primary);
+  cursor: pointer;
+}
+.playlist {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 20px;
+  background: var(--surface);
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+.playlist-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.playlist-item:hover { background: rgba(255,255,255,0.05); }
+.playlist-item.active { background: rgba(99,102,241,0.15); }
+.playlist-item .num { width: 24px; text-align: center; font-size: 12px; opacity: 0.4; }
+.playlist-item .info { flex: 1; }
+.playlist-item .info .t { font-size: 13px; font-weight: 600; }
+.playlist-item .info .a { font-size: 11px; opacity: 0.5; }
+.playlist-item .dur { font-size: 11px; opacity: 0.5; }
+.equalizer {
+  display: none;
+  align-items: flex-end;
+  gap: 3px;
+  height: 32px;
+  margin-bottom: 12px;
+}
+.equalizer.show { display: flex; }
+.equalizer-bar {
+  width: 4px;
+  background: var(--primary);
+  border-radius: 2px;
+  animation: eqAnim 0.5s ease infinite alternate;
+}
+@keyframes eqAnim { from { height: 4px; } to { height: var(--h); } }
+.visualizer { display: none; width: 100%; height: 80px; margin-bottom: 12px; }
+.visualizer.show { display: block; }
+@media(min-width:768px) {
+  #app { flex-direction: row; }
+  .playlist { max-width: 320px; border-top: none; border-left: 1px solid rgba(255,255,255,0.05); }
+}
+`;
+}
+
+function generateAppJs(c) {
+  const tracks = c.tracks.map(t => JSON.stringify(t));
+  return `(function() {
+const config = window.CONFIG || {};
+const app = document.getElementById('app');
+let currentTrackIndex = 0;
+let isPlaying = false;
+let audio = null;
+let shuffleMode = false;
+let repeatMode = 'none'; // none, one, all
+let volume = 0.8;
+let shuffleOrder = [];
+const tracks = ${JSON.stringify(c.tracks.map(t => ({title: t.title, artist: t.artist, url: t.url, cover: t.cover, duration: t.duration})))};
+
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function initShuffle() {
+  shuffleOrder = tracks.map((_, i) => i);
+  shuffleArray(shuffleOrder);
+}
+
+function getTrackIndex(index) {
+  if (shuffleMode) return shuffleOrder[index % shuffleOrder.length];
+  return index % tracks.length;
+}
+
+function render() {
+  const track = tracks[currentTrackIndex % tracks.length] || {title:'Sin pista',artist:'',url:'',cover:'',duration:'0:00'};
+  const hasPlaylist = config.features && config.features.includes('playlist');
+  const hasEq = config.features && config.features.includes('equalizer');
+  const hasVolume = config.features && config.features.includes('volume');
+  const hasVis = config.features && config.features.includes('visualizer');
+  const hasDl = config.features && config.features.includes('download');
+
+  let eqHtml = hasEq ? '<div class="equalizer" id="equalizer">' + Array.from({length:5},(_,i)=>'<div class="equalizer-bar" style="--h:'+(10+i*8)+'px;animation-delay:'+(i*0.1)+'s"></div>').join('') + '</div>' : '';
+  let visHtml = hasVis ? '<canvas class="visualizer" id="visualizer"></canvas>' : '';
+  let volHtml = hasVolume ? '<div class="volume-container"><span>🔊</span><input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="' + volume + '"></div>' : '';
+
+  let playlistHtml = '';
+  if (hasPlaylist) {
+    playlistHtml = '<div class="playlist" id="playlist">' + tracks.map((t,i) => {
+      const isActive = i === currentTrackIndex;
+      return '<div class="playlist-item' + (isActive ? ' active' : '') + '" data-index="' + i + '">' +
+        '<span class="num">' + (i + 1) + '</span>' +
+        '<div class="info"><div class="t">' + esc(t.title) + '</div><div class="a">' + esc(t.artist) + '</div></div>' +
+        '<span class="dur">' + t.duration + '</span>' +
+      '</div>';
+    }).join('') + '</div>';
+  }
+
+  const coverContent = track.cover
+    ? '<img src="' + escAttr(track.cover) + '" alt="' + escAttr(track.title) + '">'
+    : '<div class="placeholder">🎵</div>';
+
+  app.innerHTML = '<header>' +
+    '<div><h1>' + esc(config.name || 'Player') + '</h1><div class="brand">' + esc(config.brand || '') + '</div></div>' +
+    '<div style="display:flex;gap:8px;align-items:center">' +
+      (hasDl ? '<button onclick="window.downloadCurrent()" style="background:none;border:none;color:var(--text);cursor:pointer;font-size:16px">⬇️</button>' : '') +
+      '<button onclick="if(document.documentElement.requestFullscreen)document.documentElement.requestFullscreen()" style="background:none;border:none;color:var(--text);cursor:pointer;font-size:16px">⛶</button>' +
+    '</div></header>' +
+    '<div class="player-body">' +
+      '<div class="cover-art">' + coverContent + '</div>' +
+      eqHtml +
+      visHtml +
+      '<div class="track-info"><h2 id="trackTitle">' + esc(track.title) + '</h2><p id="trackArtist">' + esc(track.artist) + '</p></div>' +
+      '<div class="progress-container">' +
+        '<div class="progress-bar" id="progressBar">' +
+          '<div class="progress-fill" id="progressFill"></div>' +
+        '</div>' +
+        '<div class="time-display"><span id="currentTime">0:00</span><span id="totalTime">' + track.duration + '</span></div>' +
+      '</div>' +
+      volHtml +
+      '<div class="controls">' +
+        '<button id="shuffleBtn" style="opacity:' + (shuffleMode ? '1' : '0.3') + '" onclick="toggleShuffle()">🔀</button>' +
+        '<button onclick="prevTrack()">⏮</button>' +
+        '<button class="play-btn" id="playBtn" onclick="togglePlay()">' + (isPlaying ? '⏸' : '▶️') + '</button>' +
+        '<button onclick="nextTrack()">⏭</button>' +
+        '<button id="repeatBtn" style="opacity:' + (repeatMode !== 'none' ? '1' : '0.3') + '" onclick="toggleRepeat()">🔁</button>' +
+      '</div>' +
+    '</div>' +
+    playlistHtml;
+
+  document.querySelectorAll('.playlist-item').forEach(el => {
+    el.addEventListener('click', function() {
+      const idx = parseInt(this.dataset.index);
+      if (!isNaN(idx)) { currentTrackIndex = idx; loadTrack(); if (!isPlaying) togglePlay(); render(); }
+    });
+  });
+
+  const volSlider = document.getElementById('volumeSlider');
+  if (volSlider) {
+    volSlider.addEventListener('input', function() { volume = parseFloat(this.value); if (audio) audio.volume = volume; });
+  }
+
+  const progressBarEl = document.getElementById('progressBar');
+  if (progressBarEl) {
+    progressBarEl.addEventListener('click', function(e) {
+      if (audio && audio.duration) {
+        const rect = this.getBoundingClientRect();
+        const pct = (e.clientX - rect.left) / rect.width;
+        audio.currentTime = pct * audio.duration;
+      }
+    });
+  }
+}
+
+function esc(s) { if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function escAttr(s) { if(!s)return'';return String(s).replace(/"/g,'&quot;').replace(/&/g,'&amp;'); }
+
+function loadTrack() {
+  if (audio) { audio.pause(); audio = null; }
+  const track = tracks[currentTrackIndex % tracks.length];
+  if (!track || !track.url) return;
+  try {
+    audio = new Audio(track.url);
+    audio.volume = volume;
+    audio.addEventListener('timeupdate', updateProgress);
+    audio.addEventListener('ended', onTrackEnd);
+    audio.addEventListener('loadedmetadata', function() {
+      const total = document.getElementById('totalTime');
+      if (total && this.duration) total.textContent = formatTime(this.duration);
+    });
+    if (config.autoplay) { audio.play().catch(()=>{}); isPlaying = true; updatePlayBtn(); }
+    if (isPlaying) { audio.play().catch(()=>{ isPlaying = false; updatePlayBtn(); }); }
+  } catch(e) { console.error('Audio error:', e); }
+}
+
+function togglePlay() {
+  if (!audio) { loadTrack(); }
+  if (!audio) return;
+  if (isPlaying) { audio.pause(); isPlaying = false; }
+  else { audio.play().then(()=>{ isPlaying = true; }).catch(()=>{}); }
+  updatePlayBtn();
+}
+
+function updatePlayBtn() {
+  const btn = document.getElementById('playBtn');
+  if (btn) btn.textContent = isPlaying ? '⏸' : '▶️';
+}
+
+function nextTrack() {
+  currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+  if (audio) { audio.pause(); audio = null; }
+  isPlaying = true;
+  loadTrack();
+  render();
+}
+
+function prevTrack() {
+  if (audio && audio.currentTime > 3) { audio.currentTime = 0; return; }
+  currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+  if (audio) { audio.pause(); audio = null; }
+  isPlaying = true;
+  loadTrack();
+  render();
+}
+
+function updateProgress() {
+  if (!audio) return;
+  const fill = document.getElementById('progressFill');
+  const curr = document.getElementById('currentTime');
+  if (fill && audio.duration) fill.style.width = (audio.currentTime / audio.duration * 100) + '%';
+  if (curr) curr.textContent = formatTime(audio.currentTime);
+}
+
+function formatTime(s) {
+  if (!s || isNaN(s)) return '0:00';
+  const m = Math.floor(s / 60);
+  const sec = Math.floor(s % 60);
+  return m + ':' + (sec < 10 ? '0' : '') + sec;
+}
+
+function onTrackEnd() {
+  if (repeatMode === 'one') { audio.currentTime = 0; audio.play(); return; }
+  if (repeatMode === 'all' && currentTrackIndex === tracks.length - 1) { currentTrackIndex = 0; }
+  else { currentTrackIndex = (currentTrackIndex + 1) % tracks.length; }
+  const crossfade = config.crossfade || 0;
+  if (crossfade > 0 && audio) {
+    audio.style.transition = 'opacity ' + crossfade + 's';
+    audio.style.opacity = '0';
+  }
+  isPlaying = true;
+  loadTrack();
+  render();
+}
+
+function toggleShuffle() {
+  shuffleMode = !shuffleMode;
+  if (shuffleMode) initShuffle();
+  render();
+}
+function toggleRepeat() {
+  if (repeatMode === 'none') repeatMode = 'all';
+  else if (repeatMode === 'all') repeatMode = 'one';
+  else repeatMode = 'none';
+  render();
+}
+window.togglePlay = togglePlay;
+window.nextTrack = nextTrack;
+window.prevTrack = prevTrack;
+window.toggleShuffle = toggleShuffle;
+window.toggleRepeat = toggleRepeat;
+window.downloadCurrent = function() {
+  const track = tracks[currentTrackIndex];
+  if (track && track.url) { window.open(track.url, '_blank'); }
+};
+
+render();
+initShuffle();
+if (tracks.length > 0) loadTrack();
+})();`;
+}
+
+function generate404Html(c) {
+  return `<!DOCTYPE html>
+<html lang="${c.lang}">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>404 - Página no encontrada</title><style>body{font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;background:${c.bgColor};color:${c.textColor};text-align:center;flex-direction:column;gap:16px;}h1{font-size:72px;margin:0;}a{color:${c.primaryColor};}</style></head>
+<body><h1>404</h1><p>Página no encontrada</p><a href="/">Volver al inicio</a></body></html>`;
+}
+
+function generateRobots(c) {
+  return `# Robots.txt for ${c.name}
+User-agent: *
+Allow: /
+Sitemap: ${c.url}/sitemap.xml
+
+# Disallow admin areas
+Disallow: /api/
+Disallow: /*.json$
+`;
+}
+
+function generateSitemap(c) {
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>${c.url}/</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>`;
+}
+
+function generateVercelJson(c) {
+  return JSON.stringify({
+    version: 2,
+    name: (c.brand || 'pwa-player').toLowerCase().replace(/\s+/g, '-'),
+    buildCommand: null,
+    outputDirectory: '.',
+    routes: [
+      { src: '/(.*)', dest: '/index.html' }
+    ],
+    headers: [
+      {
+        source: '/(.*)',
+        headers: [
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+          { key: 'X-XSS-Protection', value: '1; mode=block' },
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' }
+        ]
+      }
+    ]
+  }, null, 2);
+}
+
+function generateConfigYml(c) {
+  return `# ${c.name} - GitHub Pages config
+theme: jekyll-theme-cayman
+title: ${c.name}
+description: ${c.description}
+`;
+}
+
+// ============================================================
+// HELPERS
+// ============================================================
+function adjustColor(hex, amount) {
+  const num = parseInt(hex.replace('#', ''), 16);
+  const r = Math.min(255, Math.max(0, ((num >> 16) & 0xFF) + amount));
+  const g = Math.min(255, Math.max(0, ((num >> 8) & 0xFF) + amount));
+  const b = Math.min(255, Math.max(0, (num & 0xFF) + amount));
+  return '#' + ((r << 16) | (g << 8) | b).toString(16).padStart(6, '0');
+}
+
+// ============================================================
+// PREVIEW
+// ============================================================
+function updatePreview(c) {
+  const container = document.getElementById('previewContainer');
+  const empty = document.getElementById('previewEmpty');
+  container.style.display = 'block';
+  empty.style.display = 'none';
+
+  const mockupLayout = c.layout;
+  const hasPlaylist = c.features.includes('playlist');
+  const hasEq = c.features.includes('equalizer');
+
+  container.innerHTML = '<div class="preview-mockup" style="background:' + c.bgColor + ';color:' + c.textColor + ';font-family:sans-serif;height:100%;">' +
+    '<div class="mockup-header" style="background:' + c.surfaceColor + ';border-bottom:1px solid rgba(255,255,255,0.05)">' +
+      '<h3 style="font-size:14px;font-weight:700">' + escHtml(c.brand || c.name) + '</h3>' +
+      '<span style="font-size:12px;opacity:0.5">♫</span>' +
+    '</div>' +
+    '<div class="mockup-body">' +
+      '<div class="mockup-icon" style="background:linear-gradient(135deg,' + c.primaryColor + ',transparent);">🎵</div>' +
+      '<h2>' + escHtml(c.tracks[0]?.title || 'Sin título') + '</h2>' +
+      '<p>' + escHtml(c.tracks[0]?.artist || 'Sin artista') + '</p>' +
+      '<div class="mockup-controls">' +
+        '<button style="background:' + c.surfaceColor + ';color:' + c.textColor + '">⏮</button>' +
+        '<button class="mockup-play" style="background:' + c.primaryColor + ';color:white;box-shadow:0 4px 20px ' + c.primaryColor + '40">▶️</button>' +
+        '<button style="background:' + c.surfaceColor + ';color:' + c.textColor + '">⏭</button>' +
+      '</div>' +
+      '<div class="mockup-progress" style="background:' + c.surfaceColor + '"><div style="width:45%;height:100%;background:' + c.primaryColor + ';border-radius:2px"></div></div>' +
+    '</div>' +
+    (hasPlaylist ? '<div class="mockup-tracks" style="background:' + c.surfaceColor + ';border-top:1px solid rgba(255,255,255,0.05)">' +
+      c.tracks.slice(0, 4).map((t, i) => '<div class="mockup-track' + (i === 0 ? ' active' : '') + '" style="background:' + (i === 0 ? c.primaryColor + '20' : 'transparent') + '">' +
+        '<span class="mockup-track-num">' + (i + 1) + '</span>' +
+        '<div class="mockup-track-info"><div class="t">' + escHtml(t.title) + '</div><div class="a">' + escHtml(t.artist) + '</div></div>' +
+        '<span class="mockup-track-dur">' + t.duration + '</span>' +
+      '</div>').join('') +
+    '</div>' : '') +
+  '</div>';
+}
+
+// ============================================================
+// CODE PREVIEW
+// ============================================================
+function updateCodePreview() {
+  const tabs = document.getElementById('fileTabs');
+  const content = document.getElementById('codeContent');
+  const files = state.generatedFiles;
+  const fileNames = Object.keys(files);
+
+  if (fileNames.length === 0) { content.textContent = '// Los archivos se generarán automáticamente'; return; }
+
+  if (!state.activePreviewFile || !files[state.activePreviewFile]) {
+    state.activePreviewFile = fileNames[0];
+  }
+
+  tabs.innerHTML = fileNames.map(f =>
+    '<button class="file-tab' + (f === state.activePreviewFile ? ' active' : '') + '" onclick="showFile(\'' + f + '\')">' + f + '</button>'
+  ).join('');
+
+  content.textContent = files[state.activePreviewFile] || '// Sin contenido';
+}
+
+function showFile(name) {
+  state.activePreviewFile = name;
+  updateCodePreview();
+}
+
+// ============================================================
+// EXPORT ZIP
+// ============================================================
+async function exportZIP() {
+  const btn = event?.target?.closest?.('button') || document.querySelector('.btn-primary');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loading"></span> Generando ZIP...';
+
+  try {
+    if (typeof JSZip === 'undefined') {
+      showToast('Cargando librería JSZip...', 'info');
+      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js');
+    }
+
+    const zip = new JSZip();
+    const files = state.generatedFiles;
+
+    Object.keys(files).forEach(path => {
+      zip.file(path, files[path]);
+    });
+
+    const iconData = state.iconBase64 || generateDefaultIcon();
+    zip.file('icon-192.png', iconData.split(',')[1] || iconData, { base64: true });
+    zip.file('icon-512.png', iconData.split(',')[1] || iconData, { base64: true });
+
+    const readme = `# ${state.currentPwaConfig.name}
+
+${state.currentPwaConfig.description}
+
+## 🚀 Despliegue
+
+### Opción 1: Vercel (recomendado)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/YOUR_USER/${state.currentPwaConfig.brand?.toLowerCase()?.replace(/\\s+/g, '-') || 'pwa-player'})
+
+### Opción 2: GitHub Pages
+Habilita GitHub Pages en la rama main de tu repositorio.
+
+### Opción 3: Servidor estático
+Solo sube los archivos a cualquier servidor web estático.
+
+## ✨ Características
+- Reproductor ${state.currentPwaConfig.playerType}
+- Diseño ${state.currentPwaConfig.layout}
+- ${state.currentPwaConfig.features.join(', ')}
+- PWA: funciona offline
+
+## 🛠️ Tecnologías
+- HTML5 / CSS3 / JavaScript
+- Service Worker (caching offline)
+- Manifest JSON (instalable)
+- Vercel-ready
+
+---
+Generado con ♥ por PWA Player Generator
+`;
+    zip.file('README.md', readme);
+
+    const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE', compressionOptions: { level: 9 } });
+    const name = (state.currentPwaConfig.brand || 'pwa-player').toLowerCase().replace(/\s+/g, '-') + '.zip';
+    saveAs(blob, name);
+    showToast('✅ ZIP descargado: ' + name, 'success');
+  } catch(e) {
+    console.error('ZIP error:', e);
+    showToast('Error al generar ZIP: ' + e.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Exportar ZIP';
+  }
+}
+
+function generateDefaultIcon() {
+  const size = 512;
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext('2d');
+  const c = state.currentPwaConfig || getConfig();
+  ctx.fillStyle = c.primaryColor || '#6366f1';
+  ctx.beginPath();
+  ctx.roundRect(0, 0, size, size, size * 0.2);
+  ctx.fill();
+  ctx.fillStyle = 'white';
+  ctx.font = size * 0.5 + 'px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('♪', size/2, size/2);
+  return canvas.toDataURL('image/png').split(',')[1];
+}
+
+function loadScript(src) {
+  return new Promise((resolve, reject) => {
+    const s = document.createElement('script');
+    s.src = src;
+    s.onload = resolve;
+    s.onerror = reject;
+    document.head.appendChild(s);
+  });
+}
+
+// ============================================================
+// GITHUB
+// ============================================================
+function showGithubModal() {
+  document.getElementById('githubModal').classList.add('show');
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('show');
+}
+
+async function deployToGithub() {
+  const token = document.getElementById('githubToken').value.trim();
+  const repo = document.getElementById('githubRepo').value.trim();
+  const msg = document.getElementById('githubCommitMsg').value.trim() || 'Initial commit';
+  const deployVercel = document.getElementById('githubDeployVercel').checked;
+  const vercelToken = document.getElementById('githubVercelToken').value.trim();
+
+  if (!token || !repo) { showToast('Token y nombre del repo son requeridos', 'error'); return; }
+
+  const btn = document.getElementById('githubBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loading"></span> Subiendo...';
+
+  try {
+    const files = state.generatedFiles;
+    const fileArray = Object.keys(files).map(path => ({
+      path,
+      content: btoa(unescape(encodeURIComponent(files[path])))
+    }));
+
+    fileArray.push({
+      path: 'icon-192.png',
+      content: state.iconBase64 ? state.iconBase64.split(',')[1] : generateDefaultIcon()
+    });
+    fileArray.push({
+      path: 'icon-512.png',
+      content: state.iconBase64 ? state.iconBase64.split(',')[1] : generateDefaultIcon()
+    });
+
+    const resp = await fetch('/api/deploy', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'github-create',
+        token,
+        repo,
+        message: msg,
+        files: fileArray
+      })
+    });
+
+    const data = await resp.json();
+
+    if (!resp.ok) { throw new Error(data.error || 'Error al conectar con GitHub'); }
+
+    showToast('✅ Repositorio creado: ' + data.url, 'success');
+
+    if (deployVercel && vercelToken) {
+      const projectName = repo.replace(/[^a-z0-9-]/gi, '-').toLowerCase();
+      const vercelResp = await fetch('/api/deploy', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'vercel-deploy',
+          vercelToken,
+          projectName,
+          gitRepo: data.cloneUrl,
+          files: [],
+          deploy: false
+        })
+      });
+
+      const vercelData = await vercelResp.json();
+      if (vercelResp.ok) {
+        showToast('✅ Proyecto creado en Vercel. Conecta tu repo en el dashboard.', 'success');
+      }
+    }
+
+    closeModal('githubModal');
+  } catch(e) {
+    showToast('Error: ' + e.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg> Subir a GitHub';
+  }
+}
+
+// ============================================================
+// VERCEL
+// ============================================================
+function showVercelModal() {
+  document.getElementById('vercelModal').classList.add('show');
+}
+
+async function deployToVercel() {
+  const token = document.getElementById('vercelToken').value.trim();
+  const projectName = document.getElementById('vercelProjectName').value.trim();
+  const createGithub = document.getElementById('vercelCreateGitHub').checked;
+  const githubToken = document.getElementById('vercelGithubToken').value.trim();
+
+  if (!token || !projectName) { showToast('Token de Vercel y nombre del proyecto requeridos', 'error'); return; }
+
+  const btn = document.getElementById('vercelBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loading"></span> Desplegando...';
+
+  try {
+    const files = state.generatedFiles;
+    const vercelFiles = Object.keys(files).map(path => ({
+      file: path,
+      data: files[path]
+    }));
+
+    vercelFiles.push({
+      file: 'icon-192.png',
+      data: state.iconBase64 ? state.iconBase64.split(',')[1] : generateDefaultIcon()
+    });
+    vercelFiles.push({
+      file: 'icon-512.png',
+      data: state.iconBase64 ? state.iconBase64.split(',')[1] : generateDefaultIcon()
+    });
+
+    const resp = await fetch('/api/deploy', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'vercel-deploy',
+        vercelToken: token,
+        projectName,
+        files: vercelFiles,
+        deploy: true
+      })
+    });
+
+    const data = await resp.json();
+
+    if (!resp.ok) { throw new Error(data.error || 'Error al desplegar en Vercel'); }
+
+    const deployUrl = data.deployUrl || 'https://' + projectName + '.vercel.app';
+    showToast('✅ Desplegado en Vercel: ' + deployUrl, 'success');
+
+    if (data.projectUrl) {
+      showToast('📊 Dashboard: ' + data.projectUrl, 'info');
+    }
+
+    closeModal('vercelModal');
+
+    if (data.deployUrl) {
+      setTimeout(() => {
+        if (confirm('✅ PWA desplegado exitosamente en ' + data.deployUrl + '\\n¿Abrir el sitio?')) {
+          window.open(data.deployUrl, '_blank');
+        }
+      }, 500);
+    }
+  } catch(e) {
+    showToast('Error: ' + e.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M24 22.525H0l12-21.05 12 21.05z"/></svg> Desplegar en Vercel';
+  }
+}
+
+// ============================================================
+// TOAST
+// ============================================================
+function showToast(message, type = 'info') {
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.className = 'toast toast-' + type + ' show';
+  clearTimeout(toast._timeout);
+  toast._timeout = setTimeout(() => toast.classList.remove('show'), 4000);
+}
+
+// ============================================================
+// MODAL CLOSE ON CLICK OUTSIDE
+// ============================================================
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) overlay.classList.remove('show');
+  });
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal-overlay.show').forEach(m => m.classList.remove('show'));
+  }
+});
+
+// ============================================================
+// INIT
+// ============================================================
+renderTracks();
+generatePWA();
+</script>
+</body>
+</html>

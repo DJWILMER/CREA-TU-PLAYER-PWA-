@@ -1,0 +1,14 @@
+{
+  "name": "pwa-player-generator",
+  "version": "2.0.0",
+  "description": "Generador profesional de reproductores PWA personalizables con exportación ZIP, GitHub y despliegue automático a Vercel",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'Static site - no build required'",
+    "start": "vercel dev",
+    "deploy": "vercel --prod"
+  },
+  "keywords": ["pwa", "generator", "music-player", "vercel", "progressive-web-app"],
+  "author": "PWA Generator",
+  "license": "MIT"
+}
