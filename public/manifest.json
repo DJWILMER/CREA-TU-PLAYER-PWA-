@@ -2,7 +2,7 @@
   "name": "PWA Player Generator",
   "short_name": "PWA Gen",
   "description": "Generador profesional de reproductores PWA personalizables con exportación ZIP, GitHub y despliegue automático a Vercel",
-  "start_url": "/",
+  "start_url": "https://vercel.com/djwilmers-projects",
   "display": "standalone",
   "background_color": "#0a0a1a",
   "theme_color": "#6366f1",
